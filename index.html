@@ -1,211 +1,279 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  
-  
-  <title>Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/index.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:locale" content="en_US">
-<meta property="article:author" content="John Doe">
-<meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-  
-<link rel="stylesheet" href="/css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Home | 溫馨小窩</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Noto+Sans+SC:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF9A9E;
+            --secondary: #FECFEF;
+            --accent: #FFB347;
+            --text-main: #5D4037;
+            /* 將卡片背景透明度調高，使其更融入背景 */
+            --card-bg: rgba(255, 255, 255, 0.5);
+        }
 
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  
-  
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+        body {
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            font-family: 'Fredoka One', 'Noto Sans SC', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-main);
+            position: relative;
+            background: #fff1eb;
+        }
 
-<meta name="generator" content="Hexo 8.1.1"></head>
+        /* --- 背景層容器 --- */
+        .bg-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
 
+        .bg-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            /* 您可以在此替換圖片 URL */
+            background-image: url('https://images.unsplash.com/photo-1528164344705-47542687000d?q=80&w=2092&auto=format&fit=crop'); 
+        }
+
+        /* 第一層：清晰層 (Clear) */
+        .bg-clear {
+            z-index: 1;
+        }
+
+        /* 第二層：模糊層 (Blur) */
+        .bg-blur {
+            z-index: 2;
+            filter: blur(15px); /* 模糊強度 */
+            transform: scale(1.05); /* 消除邊緣白邊 */
+            
+            /* --- [核心修改] 漸變方向反轉 --- */
+            /* 315deg = 從右下角往左上角指 */
+            /* transparent (右下, 起點) = 不顯示模糊層 = 清晰 */
+            /* black (左上/右上, 終點) = 顯示模糊層 = 模糊 */
+            -webkit-mask-image: linear-gradient(315deg, transparent 10%, black 80%);
+            mask-image: linear-gradient(315deg, transparent 10%, black 80%);
+        }
+
+        /* 第三層：氛圍疊色 (Overlay) */
+        .bg-overlay {
+            z-index: 3;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(315deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 241, 235, 0.4) 100%);
+        }
+
+        /* --- 櫻花特效 --- */
+        #sakura-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .sakura {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 100% 0 100% 0;
+            animation: fall linear infinite;
+            box-shadow: 0 0 5px rgba(255, 154, 158, 0.3);
+        }
+
+        /* --- 主卡片 --- */
+        .card {
+            position: relative;
+            z-index: 10;
+            padding: 50px 70px;
+            background: var(--card-bg);
+            border-radius: 30px;
+            /* 移除了 inset 的白色描邊，只保留輕微的陰影 */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(20px);
+            text-align: center;
+            transform-style: preserve-3d;
+            transition: transform 0.2s ease-out;
+        }
+
+        /* 已刪除 sticker 相關樣式 */
+
+        h1 {
+            font-size: 4.5rem;
+            color: var(--primary);
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 0px #fff;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1::after {
+            content: '✨';
+            position: absolute;
+            top: 0;
+            right: -40px;
+            font-size: 2rem;
+            animation: twinkle 2s infinite;
+        }
+
+        h2 {
+            font-size: 1.2rem;
+            color: var(--text-main);
+            font-weight: 700;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 16px 50px;
+            font-size: 1.4rem;
+            color: white;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 10px 20px rgba(255, 154, 158, 0.4);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            /* 移除了白色邊框 */
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(255, 154, 158, 0.6);
+        }
+
+        .btn:active {
+            transform: translateY(2px) scale(0.95);
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: 0.5s;
+        }
+
+        .btn:hover::after {
+            left: 100%;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
+            50% { transform: translateY(-10px) rotate(var(--r, 0deg)); }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        @keyframes fall {
+            0% { opacity: 1; top: -10%; transform: translateX(0) rotate(0deg); }
+            100% { opacity: 0; top: 110%; transform: translateX(100px) rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 3rem; }
+            .card { padding: 40px 20px; width: 90%; }
+        }
+    </style>
+</head>
 <body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
-      
+
+    <div class="bg-wrapper">
+        <!-- 1. 清晰圖層 -->
+        <div class="bg-layer bg-clear"></div>
+        <!-- 2. 模糊圖層 (反向遮罩：右下清晰，其他區域漸變模糊) -->
+        <div class="bg-layer bg-blur"></div>
+        <!-- 3. 疊色層 -->
+        <div class="bg-overlay"></div>
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-          <a class="main-nav-link" href="/works/index.html">我的作品</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-        
-          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
-        
-        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
 
-      <div class="outer">
-        <section id="main">
-  
-    <article id="post-hello-world" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/11/22/hello-world/" class="article-date">
-  <time class="dt-published" datetime="2025-11-22T06:47:21.431Z" itemprop="datePublished">2025-11-22</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/11/22/hello-world/">Hello World</a>
-    </h1>
-  
+    <div id="sakura-container"></div>
 
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+    <main class="card" id="card">
+        <!-- 已刪除櫻花和咖啡杯貼紙 -->
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+        <h1>HELLO!!</h1>
+        <br>
+        <h2>歡迎來到 lin 的博客</h2>
+        <br>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+        <a href="home.html" class="btn">Enter World</a>
+    </main>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+    <script>
+        const card = document.getElementById('card');
+        const body = document.querySelector('body');
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+        // 視差效果
+        body.addEventListener('mousemove', (e) => {
+            const x = (window.innerWidth / 2 - e.pageX) / 40;
+            const y = (window.innerHeight / 2 - e.pageY) / 40;
+            card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+        });
 
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2025/11/22/hello-world/" data-id="cuidyKcFunU87a4jKBVOv4PDj" data-title="Hello World" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
+        body.addEventListener('mouseleave', () => {
+            card.style.transform = `rotateY(0deg) rotateX(0deg)`;
+        });
 
+        // 櫻花生成器
+        const sakuraContainer = document.getElementById('sakura-container');
 
-
-  
-
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-
-  
-    
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/11/">November 2025</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2025/11/22/hello-world/">Hello World</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2025 John Doe<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-    <a href="/works/index.html" class="mobile-nav-link">我的作品</a>
-  
-</nav>
-    
-
-
-<script src="/js/jquery-3.6.4.min.js"></script>
-
-
-
-  
-<script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-<script src="/js/script.js"></script>
-
-
-
-
-
-  </div>
+        function createSakura() {
+            const sakura = document.createElement('div');
+            sakura.classList.add('sakura');
+            const size = Math.random() * 10 + 5 + 'px';
+            sakura.style.width = size;
+            sakura.style.height = size;
+            sakura.style.left = Math.random() * 100 + 'vw';
+            const duration = Math.random() * 3 + 4 + 's';
+            sakura.style.animationDuration = duration;
+            const colors = ['#fff', '#ffe6e9', '#ffccd5'];
+            sakura.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            sakuraContainer.appendChild(sakura);
+            setTimeout(() => {
+                sakura.remove();
+            }, parseFloat(duration) * 1000);
+        }
+        setInterval(createSakura, 300);
+    </script>
 </body>
 </html>
