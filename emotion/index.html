@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emotion Station | 心情轉運站</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Noto+Sans+SC:wght@500;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+<link rel="stylesheet" href="/css/emotion.css">
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+<body>
+  <header class="main-header">
+    <a href="/portal/" class="logo">lin 的小屋</a>
+    <nav class="nav-links">
+      <a href="/portal/" class="nav-item">HOME</a>
+      <a href="/emotion/" class="nav-item" id="mood-nav">EMOTION</a>
+    </nav>
+  </header>
+  <div class="cloud c1"></div>
+  <div class="cloud c2"></div>
+  <div class="station-container">
+    <h1 class="title">MOOD LAB</h1>
+    <p class="subtitle">输入你的心情，领取前往异世界的车牌</p>
+    <div class="input-wrapper" id="input-box">
+      <input type="text" id="mood-input" placeholder="例如：开心、有点累、想喝奶茶..." autocomplete="off">
+      <button class="print-btn" id="generate-btn"><i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+    <div class="ticket-wrapper" id="ticket-wrapper">
+      <div class="ticket" id="ticket" onclick="goHome()">
+        <div class="ticket-left">
+          <div class="label">CURRENT MOOD</div>
+          <div class="mood-text" id="t-mood">---</div>
+          <div class="label">NOTE</div>
+          <div class="quote" id="t-quote">記錄當下的瞬間</div>
+        </div>
+        <div class="ticket-right" id="t-right">
+          <div class="enter-text">返回</div>
+        </div>
+      </div>
+      <p style="margin-top: 15px; font-size: 0.9rem; color: #fff; opacity: 0.8;">记录心情</p>
+    </div>
+  </div>
+  
+<script src="/js/emotion.js"></script>
+
+</body>
+</html>
