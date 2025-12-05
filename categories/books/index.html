@@ -1,30 +1,22 @@
 
-
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>lin 的博客 | 中庭漫步</title>
+    <title>BOOKS | 分区文章</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Fredoka+One&family=Noto+Sans+SC:wght@400;700;900&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
-    
-<link rel="stylesheet" href="/css/index.css">
-
+<link rel="stylesheet" href="/css/category.css">
 
     <style>
-        .section-welcome::before { background-image: url('/images/index.jpg'); }
-        .section-welcome::after { background-image: url('/images/index-night.jpg'); }
-        .tech::before { background-image: url('/images/tech.jpg'); }
-        .books::before { background-image: url('/images/gal.webp'); }
-        .movies::before { background-image: url('/images/movies.jpg'); }
-        .games::before { background-image: url('/images/games.jpg'); }
-        #theme-toggle { position: fixed; top: 5%; right: 5%; z-index: 1000; opacity: 0.9; }
+        #global-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+        theme-button { position: fixed; top: 5%; right: 5%; z-index: 2000; }
     </style>
 <meta name="generator" content="Hexo 8.1.1"></head>
 <body class="preload">
-
+    
     <script>
         (function() {
             const savedTheme = localStorage.getItem('theme');
@@ -36,11 +28,12 @@
 
     <canvas id="global-canvas"></canvas>
     
-    <theme-button id="theme-toggle" size="1"></theme-button>
+    <a href="/index/" class="back-btn"><i class="fa-solid fa-arrow-left"></i> BACK HOME</a>
     
+    <theme-button id="btn" size="1"></theme-button>
     <script>
         (function() {
-            const btn = document.getElementById('theme-toggle');
+            const btn = document.getElementById('btn');
             const savedTheme = localStorage.getItem('theme');
             if (btn && savedTheme) {
                 btn.setAttribute('value', savedTheme);
@@ -48,85 +41,146 @@
         })();
     </script>
 
-    <header class="main-header">
-        <a href="javascript:void(0)" class="logo" onclick="scrollToTop()">linkdoon 的小屋</a>
-        <nav class="nav-links">
-            <a href="javascript:void(0)" class="nav-item" onclick="scrollToTop()">Top</a>
-            <a href="javascript:void(0)" class="nav-item" onclick="scrollToHub()">Hub</a> 
-            <a href="javascript:void(0)" class="nav-item" onclick="scrollToStats()">Stats</a>    
-        </nav>
+    <header class="hero-section">
+        <div class="hero-bg" id="hero-bg" style="background-image: url('/images/gal.webp')"></div>
+        <div class="hero-content">
+            <h1 class="hero-title" id="category-title">BOOKS</h1>
+            <p class="hero-subtitle" id="category-subtitle">字里行间的冒险</p>
+        </div>
     </header>
-    
-    <section class="section-welcome" id="section-welcome">
-        <div class="welcome-card" id="card">
-            <h1 id="typewriter-text"></h1> 
-            <h2>欢迎來到 linkdoon 的博客</h2>
-            <button class="btn-enter" onclick="scrollToHub()">Enter World</button>
-        </div>
-    </section>
 
-    <section class="section-hub" id="section-hub">
-        <h3 class="hub-title">SECTIONS</h1>
-        <a href="/categories/tech/" class="grid-item tech">
-            <div class="grid-content"><span class="grid-title">TECH</span><span class="grid-subtitle">代碼與創造</span></div>
-        </a>
-        <a href="/categories/books/" class="grid-item books">
-            <div class="grid-content"><span class="grid-title">BOOKS</span><span class="grid-subtitle">閱讀與思考</span></div>
-        </a>
-        <a href="/categories/movies/" class="grid-item movies">
-            <div class="grid-content"><span class="grid-title">MOVIES</span><span class="grid-subtitle">光影藝術</span></div>
-        </a>
-        <a href="/categories/games/" class="grid-item games">
-            <div class="grid-content"><span class="grid-title">GAMES</span><span class="grid-subtitle">第九藝術</span></div>
-        </a>
-    </section>
-
-    <section class="section-stats" id="section-stats">
-        <div class="stats-card">
-            <h2 class="stats-title">TAG CLOUD</h2>
-            <div class="tag-cloud">
+    <main class="container">
+        <div class="category-layout">
+            <div class="post-list" id="post-list-container">
                 
                     
-                        <a href="/categories/tech/?tag=数据结构" class="tag" style="--w: 900">数据结构</a>
-                    
-                        <a href="/categories/games/?tag=act" class="tag" style="--w: 900">act</a>
-                    
-                        <a href="/categories/games/?tag=清版砍杀" class="tag" style="--w: 900">清版砍杀</a>
-                    
-                        <a href="/categories/tech/?tag=动态规划" class="tag" style="--w: 900">动态规划</a>
-                    
-                        <a href="/categories/books/?tag=日本文学" class="tag" style="--w: 900">日本文学</a>
-                    
-                        <a href="/categories/movies/?tag=cyberpunk" class="tag" style="--w: 900">cyberpunk</a>
-                    
-                        <a href="/categories/movies/?tag=科幻" class="tag" style="--w: 900">科幻</a>
+                        
+                        <a href="/2025/12/05/%E8%88%9E%E8%88%9E%E8%88%9E/" class="post-card" data-tags="日本文学" style="animation-delay: 0s">
+                            <img src="/images/舞舞舞-cover.jpg" alt="即使筋疲力竭，也不能停下脚步 —— 舞！舞！舞！" class="post-img">
+                            <div class="post-content">
+                                <div class="post-meta">
+                                    <i class="fa-regular fa-calendar"></i> 2025-12-05 ·
+                                    <span class="tag-label">#BOOKS</span>
+                                </div>
+                                <h2 class="post-title">即使筋疲力竭，也不能停下脚步 —— 舞！舞！舞！</h2>
+                                <p class="post-excerpt">...</p>
+                                <div class="post-footer-tags">
+                                    
+                                        <span class="mini-tag">#日本文学</span>
+                                    
+                                </div>
+                            </div>
+                        </a>
                     
                 
+                <div id="no-result" style="display:none; text-align:center; padding:40px; color:#aaa;">没有找到相关文章...</div>
             </div>
-        </div>
-    </section>
 
-    <section class="section-footer" id="section-footer">
-        <div class="footer-content">
-            <div class="end-mark">/// THE END ///</div>
-            <p class="copyright">
-                &copy; 2025 liu link <br>
-                <span class="mini-text">Designed with <i class="ri-heart-fill" style="color:var(--primary)"></i> in Hexo</span>
-            </p>
+            <aside class="sidebar-filter">
+                <div class="filter-card">
+                    <h3 class="filter-title"><i class="fa-solid fa-filter"></i> 关键词检索</h3>
+                    <p class="filter-desc">Filter by keywords</p>
+                    <div class="filter-tags">
+                        <button class="filter-btn active" data-filter="all">ALL</button>
+                        
+                            <button class="filter-btn" data-filter="日本文学">
+                                日本文学 <span class="count">1</span>
+                            </button>
+                        
+                    </div>
+                </div>
+            </aside>
         </div>
-    </section>
+    </main>
 
     <script src="/js/button.js"></script>
-    
-<script src="/js/index.js"></script>
-
-    
     <script>
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.body.classList.remove('preload');
-            }, 100);
-        });
+    document.addEventListener('DOMContentLoaded', () => {
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const posts = document.querySelectorAll('.post-card');
+        const noResultMsg = document.getElementById('no-result');
+        const body = document.body;
+        const btn = document.getElementById("btn");
+        const canvas = document.getElementById('global-canvas');
+        const ctx = canvas ? canvas.getContext('2d') : null;
+        let animationId; let particles = [];
+
+        // 动画逻辑
+        if (canvas && ctx) {
+            function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+            window.addEventListener('resize', resizeCanvas); resizeCanvas();
+
+            class Sakura { constructor(){ this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 8 + 6; this.speedX = Math.random() * 1 - 0.5; this.speedY = Math.random() * 1.5 + 1; this.rotation = Math.random() * 360; this.rotationSpeed = Math.random() * 2 - 1; this.color = ['#fff', '#ffe6e9', '#ffccd5'][Math.floor(Math.random() * 3)]; } update() { this.x += this.speedX; this.y += this.speedY; this.rotation += this.rotationSpeed; if(this.y > canvas.height){ this.y = -10; this.x = Math.random() * canvas.width; }} draw() { ctx.save(); ctx.translate(this.x, this.y); ctx.rotate(this.rotation * Math.PI / 180); ctx.fillStyle = this.color; ctx.beginPath(); ctx.moveTo(0,0); ctx.bezierCurveTo(this.size/2, -this.size/2, this.size, -this.size/2, 0, this.size); ctx.fill(); ctx.restore(); } }
+            class Firefly { constructor(){ this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 3 + 1; this.angle = Math.random() * Math.PI * 2; this.speed = Math.random() * 0.4 + 0.1; this.alpha = Math.random(); this.fadeSpeed = Math.random() * 0.02 + 0.005; this.colorBase = `255, 230, ${Math.floor(Math.random() * 100 + 150)}`; } update() { this.x += Math.cos(this.angle) * this.speed; this.y += Math.sin(this.angle) * this.speed; this.angle += Math.random() * 0.2 - 0.1; if(this.x<0)this.x=canvas.width; if(this.x>canvas.width)this.x=0; if(this.y<0)this.y=canvas.height; if(this.y>canvas.height)this.y=0; this.alpha+=this.fadeSpeed; if(this.alpha>1||this.alpha<0.2)this.fadeSpeed=-this.fadeSpeed; } draw() { ctx.save(); ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fillStyle = `rgba(${this.colorBase}, ${Math.abs(this.alpha)})`; ctx.fill(); ctx.shadowBlur = 15; ctx.shadowColor = `rgba(${this.colorBase}, 0.8)`; ctx.fill(); ctx.restore(); } }
+            
+            function initParticles(type) { particles = []; const count = window.innerWidth < 768 ? 25 : 60; for(let i=0; i<count; i++) { type === 'sakura' ? particles.push(new Sakura()) : particles.push(new Firefly()); } }
+            function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { p.update(); p.draw(); }); animationId = requestAnimationFrame(animate); }
+            
+            // 初始化动画状态 (此时按钮状态已由内联脚本设置好)
+            const isDarkNow = body.classList.contains('night-mode');
+            initParticles(isDarkNow ? 'firefly' : 'sakura');
+            animate();
+
+            if(btn) {
+                btn.addEventListener("change", e => {
+                    const isDarkMode = e.detail === 'dark';
+                    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+
+                    if (isDarkMode) {
+                        body.classList.add('night-mode');
+                        cancelAnimationFrame(animationId);
+                        initParticles('firefly');
+                        animate();
+                    } else {
+                        body.classList.remove('night-mode');
+                        cancelAnimationFrame(animationId);
+                        initParticles('sakura');
+                        animate();
+                    }
+                });
+            }
+        }
+
+        // 筛选逻辑
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active')); btn.classList.add('active');
+                const filterValue = btn.getAttribute('data-filter'); let visibleCount = 0;
+                posts.forEach(post => {
+                    const postTags = post.getAttribute('data-tags').split(',');
+                    if (filterValue === 'all' || postTags.includes(filterValue)) { post.classList.remove('hidden'); post.style.animation = 'none'; post.offsetHeight; post.style.animation = 'fadeUp 0.5s forwards'; visibleCount++; }
+                    else { post.classList.add('hidden'); }
+                });
+                noResultMsg.style.display = visibleCount === 0 ? 'block' : 'none';
+            });
+        
+
+        // 3. URL 参数自动筛选 (?tag=xxx)
+        const urlParams = new URLSearchParams(window.location.search);
+        const tagParam = urlParams.get('tag');
+        if (tagParam) {
+            const targetBtn = document.querySelector(`.filter-btn[data-filter="${tagParam}"]`);
+            if (targetBtn) {
+                targetBtn.click();
+                const container = document.querySelector('.container');
+                if(container) container.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    });
+        const urlParams = new URLSearchParams(window.location.search);
+        const tagParam = urlParams.get('tag');
+        if (tagParam) {
+            const targetBtn = document.querySelector(`.filter-btn[data-filter="${tagParam}"]`);
+            if (targetBtn) { targetBtn.click(); const container = document.querySelector('.container'); if(container) container.scrollIntoView({ behavior: 'smooth' }); }
+        }
+    });
+
+    // [新增] 移除 preload
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            document.body.classList.remove('preload');
+        }, 100);
+    });
     </script>
 </body>
 </html>
