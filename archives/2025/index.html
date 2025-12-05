@@ -1,136 +1,132 @@
+
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Welcome Home | lin 的博客</title>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Noto+Sans+SC:wght@500;700&display=swap" rel="stylesheet">
-  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lin 的博客 | 中庭漫步</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Fredoka+One&family=Noto+Sans+SC:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    
 <link rel="stylesheet" href="/css/index.css">
 
+
+    <style>
+        .section-welcome::before { background-image: url('/images/index.jpg'); }
+        .section-welcome::after { background-image: url('/images/index-night.jpg'); }
+        .tech::before { background-image: url('/images/tech.jpg'); }
+        .books::before { background-image: url('/images/gal.webp'); }
+        .movies::before { background-image: url('/images/movies.jpg'); }
+        .games::before { background-image: url('/images/games.jpg'); }
+        #theme-toggle { position: fixed; top: 5%; right: 5%; z-index: 1000; opacity: 0.9; }
+    </style>
 <meta name="generator" content="Hexo 8.1.1"></head>
-<body>
-  <div class="bg-wrapper">
-    <div class="bg-layer bg-clear"></div>
-    <div class="bg-layer bg-blur"></div>
-    <div class="bg-overlay"></div>
-  </div>
-  
-  <div id="sakura-container"></div>
-  
-  <main class="card" id="card">
-    <h1 id="typewriter-text"></h1> 
-    <br>
-    <h2>歡迎來到 liu link 的博客</h2>
-    <br>
-    <a href="/portal/" class="btn">Enter World</a>
-  </main>
+<body class="preload">
 
-<script>
-    const ANIMATION_DURATION = 2500; 
-    // ... (Parallax, Body event listeners 逻辑不变) ...
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('night-mode');
+            }
+        })();
+    </script>
 
-    // 樱花生成器 (完整代码)
-    const sakuraContainer = document.getElementById('sakura-container');
-    function createSakura() {
-      const sakura = document.createElement('div');
-      sakura.classList.add('sakura');
-      
-      // 随机尺寸 (5px 到 15px)
-      const size = Math.random() * 10 + 5 + 'px';
-      sakura.style.width = size;
-      sakura.style.height = size;
-      
-      // 随机水平位置
-      sakura.style.left = Math.random() * 100 + 'vw';
-      
-      // 随机动画时长 (4s 到 7s)
-      const duration = Math.random() * 3 + 4 + 's';
-      sakura.style.animationDuration = duration;
-      
-      // 随机颜色 (白色、浅粉、粉色)
-      const colors = ['#fff', '#ffe6e9', '#ffccd5'];
-      sakura.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-      
-      sakuraContainer.appendChild(sakura);
-      
-      // 动画结束后移除元素
-      setTimeout(() => {
-        sakura.remove();
-      }, parseFloat(duration) * 1000);
-    }
-    setInterval(createSakura, 300);
-
-    // [修正] 循环打字机逻辑 (保持不变)
-    const textToType = 'HELLO!!'; 
-    const speed = 150; 
-    const pauseTime = 1500; 
-    let charIndex = 0;
+    <canvas id="global-canvas"></canvas>
     
-    function typeWriter() {
-      const h1Element = document.getElementById('typewriter-text');
-      
-      if (!h1Element) return;
-
-      if (charIndex < textToType.length) {
-        h1Element.innerHTML += textToType.charAt(charIndex);
-        charIndex++;
-        setTimeout(typeWriter, speed);
-      } else {
-        setTimeout(resetTypewriter, pauseTime);
-      }
-    }
+    <theme-button id="theme-toggle" size="1"></theme-button>
     
-    function resetTypewriter() {
-        const h1Element = document.getElementById('typewriter-text');
-        
-        h1Element.innerHTML = '';
-        charIndex = 0;
-        
-        // 关键修正：添加占位符，保持光标的可见空间
-        h1Element.innerHTML = '&nbsp;'; 
-        
-        setTimeout(() => {
-            h1Element.innerHTML = ''; // 清除占位符
-            typeWriter();
-        }, 500); 
-    }
+    <script>
+        (function() {
+            const btn = document.getElementById('theme-toggle');
+            const savedTheme = localStorage.getItem('theme');
+            if (btn && savedTheme) {
+                btn.setAttribute('value', savedTheme);
+            }
+        })();
+    </script>
+
+    <header class="main-header">
+        <a href="javascript:void(0)" class="logo" onclick="scrollToTop()">linkdoon 的小屋</a>
+        <nav class="nav-links">
+            <a href="javascript:void(0)" class="nav-item" onclick="scrollToTop()">Top</a>
+            <a href="javascript:void(0)" class="nav-item" onclick="scrollToHub()">Hub</a> 
+            <a href="javascript:void(0)" class="nav-item" onclick="scrollToStats()">Stats</a>    
+        </nav>
+    </header>
     
-    document.addEventListener('DOMContentLoaded', typeWriter);
+    <section class="section-welcome" id="section-welcome">
+        <div class="welcome-card" id="card">
+            <h1 id="typewriter-text"></h1> 
+            <h2>欢迎來到 linkdoon 的博客</h2>
+            <button class="btn-enter" onclick="scrollToHub()">Enter World</button>
+        </div>
+    </section>
 
-    // [新增] 进度条和卡片动画逻辑 (保持不变)
-    // ... (generateScatterCards, startLoadingTransition 逻辑保持不变) ...
+    <section class="section-hub" id="section-hub">
+        <h3 class="hub-title">SECTIONS</h1>
+        <a href="/categories/tech/" class="grid-item tech">
+            <div class="grid-content"><span class="grid-title">TECH</span><span class="grid-subtitle">代碼與創造</span></div>
+        </a>
+        <a href="/categories/books/" class="grid-item books">
+            <div class="grid-content"><span class="grid-title">BOOKS</span><span class="grid-subtitle">閱讀與思考</span></div>
+        </a>
+        <a href="/categories/movies/" class="grid-item movies">
+            <div class="grid-content"><span class="grid-title">MOVIES</span><span class="grid-subtitle">光影藝術</span></div>
+        </a>
+        <a href="/categories/games/" class="grid-item games">
+            <div class="grid-content"><span class="grid-title">GAMES</span><span class="grid-subtitle">第九藝術</span></div>
+        </a>
+    </section>
 
-    // 1. 卡片生成函数 (不变)
-    function generateScatterCards() {
-        // ... (卡片生成逻辑不变) ...
-    }
+    <section class="section-stats" id="section-stats">
+        <div class="stats-card">
+            <h2 class="stats-title">TAG CLOUD</h2>
+            <div class="tag-cloud">
+                
+                    
+                        <a href="/categories/tech/?tag=数据结构" class="tag" style="--w: 900">数据结构</a>
+                    
+                        <a href="/categories/games/?tag=act" class="tag" style="--w: 900">act</a>
+                    
+                        <a href="/categories/games/?tag=清版砍杀" class="tag" style="--w: 900">清版砍杀</a>
+                    
+                        <a href="/categories/tech/?tag=动态规划" class="tag" style="--w: 900">动态规划</a>
+                    
+                        <a href="/categories/books/?tag=日本文学" class="tag" style="--w: 900">日本文学</a>
+                    
+                        <a href="/categories/movies/?tag=cyberpunk" class="tag" style="--w: 900">cyberpunk</a>
+                    
+                        <a href="/categories/movies/?tag=科幻" class="tag" style="--w: 900">科幻</a>
+                    
+                
+            </div>
+        </div>
+    </section>
 
-    // 2. 动画启动函数 (不变)
-    function startLoadingTransition() {
-        const overlay = document.getElementById('loading-overlay');
-        const fill = overlay.querySelector('.progress-fill');
-        
-        overlay.classList.add('active');
-        document.querySelector('.btn').disabled = true;
+    <section class="section-footer" id="section-footer">
+        <div class="footer-content">
+            <div class="end-mark">/// THE END ///</div>
+            <p class="copyright">
+                &copy; 2025 liu link <br>
+                <span class="mini-text">Designed with <i class="ri-heart-fill" style="color:var(--primary)"></i> in Hexo</span>
+            </p>
+        </div>
+    </section>
 
-        generateScatterCards();
+    <script src="/js/button.js"></script>
+    
+<script src="/js/index.js"></script>
 
-        fill.style.animation = 'none';
-        void fill.offsetWidth; 
-        fill.style.animation = 'fill-progress 2.5s ease-in-out forwards'; 
-        
-        setTimeout(() => {
-            overlay.classList.add('completed'); 
-            
+    
+    <script>
+        window.addEventListener('load', () => {
             setTimeout(() => {
-                 window.location.href = "/portal/"; 
-            }, 300);
-
-        }, ANIMATION_DURATION);
-    }
-</script>
-
-
+                document.body.classList.remove('preload');
+            }, 100);
+        });
+    </script>
 </body>
 </html>

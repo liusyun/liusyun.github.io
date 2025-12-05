@@ -3,51 +3,130 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TECH | 分区文章</title>
-  
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  
-<link rel="stylesheet" href="/css/category.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lin 的博客 | 中庭漫步</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Fredoka+One&family=Noto+Sans+SC:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    
+<link rel="stylesheet" href="/css/index.css">
 
+
+    <style>
+        .section-welcome::before { background-image: url('/images/index.jpg'); }
+        .section-welcome::after { background-image: url('/images/index-night.jpg'); }
+        .tech::before { background-image: url('/images/tech.jpg'); }
+        .books::before { background-image: url('/images/gal.webp'); }
+        .movies::before { background-image: url('/images/movies.jpg'); }
+        .games::before { background-image: url('/images/games.jpg'); }
+        #theme-toggle { position: fixed; top: 5%; right: 5%; z-index: 1000; opacity: 0.9; }
+    </style>
 <meta name="generator" content="Hexo 8.1.1"></head>
-<body>
-  <a href="/portal/" class="back-btn"><i class="fa-solid fa-arrow-left"></i> BACK HOME</a>
+<body class="preload">
 
-  <header class="hero-section">
-    <div class="hero-bg" id="hero-bg" style="background-image: url('/images/tech.jpg')"></div>
-    <div class="hero-content">
-      <h1 class="hero-title" id="category-title">TECH</h1>
-      <p class="hero-subtitle" id="category-subtitle">代码与技术的狂想曲</p>
-    </div>
-  </header>
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('night-mode');
+            }
+        })();
+    </script>
 
-  <main class="container">
-    <div class="post-list" id="post-list-container">
-      
-        
-          <a href="/2025/11/25/Hexo%E6%90%AD%E5%BB%BA%E6%B5%8B%E8%AF%95/" class="post-card" style="animation-delay: 0s">
-            
-            <img src="/images/tech.jpg" alt="Hexo搭建测试" class="post-img">
-            
-            <div class="post-content">
-              <div class="post-meta">
-                <i class="fa-regular fa-calendar"></i> 2025-11-25 ·
-                <span class="tag">#TECH</span>
-              </div>
-              <h2 class="post-title">Hexo搭建测试</h2>
-              <p class="post-excerpt">...</p>
-              <div class="read-more">阅读全文 <i class="fa-solid fa-arrow-right"></i></div>
+    <canvas id="global-canvas"></canvas>
+    
+    <theme-button id="theme-toggle" size="1"></theme-button>
+    
+    <script>
+        (function() {
+            const btn = document.getElementById('theme-toggle');
+            const savedTheme = localStorage.getItem('theme');
+            if (btn && savedTheme) {
+                btn.setAttribute('value', savedTheme);
+            }
+        })();
+    </script>
+
+    <header class="main-header">
+        <a href="javascript:void(0)" class="logo" onclick="scrollToTop()">linkdoon 的小屋</a>
+        <nav class="nav-links">
+            <a href="javascript:void(0)" class="nav-item" onclick="scrollToTop()">Top</a>
+            <a href="javascript:void(0)" class="nav-item" onclick="scrollToHub()">Hub</a> 
+            <a href="javascript:void(0)" class="nav-item" onclick="scrollToStats()">Stats</a>    
+        </nav>
+    </header>
+    
+    <section class="section-welcome" id="section-welcome">
+        <div class="welcome-card" id="card">
+            <h1 id="typewriter-text"></h1> 
+            <h2>欢迎來到 linkdoon 的博客</h2>
+            <button class="btn-enter" onclick="scrollToHub()">Enter World</button>
+        </div>
+    </section>
+
+    <section class="section-hub" id="section-hub">
+        <h3 class="hub-title">SECTIONS</h1>
+        <a href="/categories/tech/" class="grid-item tech">
+            <div class="grid-content"><span class="grid-title">TECH</span><span class="grid-subtitle">代碼與創造</span></div>
+        </a>
+        <a href="/categories/books/" class="grid-item books">
+            <div class="grid-content"><span class="grid-title">BOOKS</span><span class="grid-subtitle">閱讀與思考</span></div>
+        </a>
+        <a href="/categories/movies/" class="grid-item movies">
+            <div class="grid-content"><span class="grid-title">MOVIES</span><span class="grid-subtitle">光影藝術</span></div>
+        </a>
+        <a href="/categories/games/" class="grid-item games">
+            <div class="grid-content"><span class="grid-title">GAMES</span><span class="grid-subtitle">第九藝術</span></div>
+        </a>
+    </section>
+
+    <section class="section-stats" id="section-stats">
+        <div class="stats-card">
+            <h2 class="stats-title">TAG CLOUD</h2>
+            <div class="tag-cloud">
+                
+                    
+                        <a href="/categories/tech/?tag=数据结构" class="tag" style="--w: 900">数据结构</a>
+                    
+                        <a href="/categories/games/?tag=act" class="tag" style="--w: 900">act</a>
+                    
+                        <a href="/categories/games/?tag=清版砍杀" class="tag" style="--w: 900">清版砍杀</a>
+                    
+                        <a href="/categories/tech/?tag=动态规划" class="tag" style="--w: 900">动态规划</a>
+                    
+                        <a href="/categories/books/?tag=日本文学" class="tag" style="--w: 900">日本文学</a>
+                    
+                        <a href="/categories/movies/?tag=cyberpunk" class="tag" style="--w: 900">cyberpunk</a>
+                    
+                        <a href="/categories/movies/?tag=科幻" class="tag" style="--w: 900">科幻</a>
+                    
+                
             </div>
-            
-            </a>
-        
-      
-    </div>
-  </main>
+        </div>
+    </section>
 
-  </body>
+    <section class="section-footer" id="section-footer">
+        <div class="footer-content">
+            <div class="end-mark">/// THE END ///</div>
+            <p class="copyright">
+                &copy; 2025 liu link <br>
+                <span class="mini-text">Designed with <i class="ri-heart-fill" style="color:var(--primary)"></i> in Hexo</span>
+            </p>
+        </div>
+    </section>
+
+    <script src="/js/button.js"></script>
+    
+<script src="/js/index.js"></script>
+
+    
+    <script>
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.body.classList.remove('preload');
+            }, 100);
+        });
+    </script>
+</body>
 </html>
