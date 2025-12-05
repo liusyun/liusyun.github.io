@@ -12,7 +12,7 @@
 
     <style>
         #global-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
-        theme-button { position: fixed; top: 5%; right: 5%; z-index: 2000; }
+        theme-button { position: fixed; top: 5%; right: 10%; z-index: 2000; }
     </style>
 <meta name="generator" content="Hexo 8.1.1"></head>
 <body class="preload">
@@ -28,7 +28,7 @@
 
     <canvas id="global-canvas"></canvas>
     
-    <a href="/index" class="back-btn"><i class="fa-solid fa-arrow-left"></i> BACK HOME</a>
+    <a href="/" class="back-btn"><i class="fa-solid fa-arrow-left"></i> BACK HOME</a>
     
     <theme-button id="btn" size="1"></theme-button>
     <script>
@@ -66,7 +66,9 @@
                                 <p class="post-excerpt">...</p>
                                 <div class="post-footer-tags">
                                     
-                                        <span class="mini-tag">#日本文学</span>
+                                        
+                                            <span class="mini-tag">#日本文学</span>
+                                        
                                     
                                 </div>
                             </div>
@@ -105,7 +107,7 @@
         const ctx = canvas ? canvas.getContext('2d') : null;
         let animationId; let particles = [];
 
-        // 动画逻辑
+        // === 动画逻辑 ===
         if (canvas && ctx) {
             function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
             window.addEventListener('resize', resizeCanvas); resizeCanvas();
@@ -116,7 +118,6 @@
             function initParticles(type) { particles = []; const count = window.innerWidth < 768 ? 25 : 60; for(let i=0; i<count; i++) { type === 'sakura' ? particles.push(new Sakura()) : particles.push(new Firefly()); } }
             function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { p.update(); p.draw(); }); animationId = requestAnimationFrame(animate); }
             
-            // 初始化动画状态 (此时按钮状态已由内联脚本设置好)
             const isDarkNow = body.classList.contains('night-mode');
             initParticles(isDarkNow ? 'firefly' : 'sakura');
             animate();
@@ -125,57 +126,84 @@
                 btn.addEventListener("change", e => {
                     const isDarkMode = e.detail === 'dark';
                     localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-
-                    if (isDarkMode) {
-                        body.classList.add('night-mode');
-                        cancelAnimationFrame(animationId);
-                        initParticles('firefly');
-                        animate();
-                    } else {
-                        body.classList.remove('night-mode');
-                        cancelAnimationFrame(animationId);
-                        initParticles('sakura');
-                        animate();
-                    }
+                    if (isDarkMode) { body.classList.add('night-mode'); cancelAnimationFrame(animationId); initParticles('firefly'); animate(); } 
+                    else { body.classList.remove('night-mode'); cancelAnimationFrame(animationId); initParticles('sakura'); animate(); }
                 });
             }
         }
 
-        // 筛选逻辑
+        // === [核心修复] 筛选逻辑 ===
+        function filterPosts(filterValue) {
+            // 全部转小写，去除空格
+            const target = filterValue ? filterValue.toLowerCase().trim() : 'all';
+            let visibleCount = 0;
+            
+            posts.forEach(post => {
+                const rawTags = post.getAttribute('data-tags') || "";
+                const postTags = rawTags.split(',').map(t => t.trim().toLowerCase());
+                
+                if (target === 'all' || postTags.includes(target)) {
+                    post.classList.remove('hidden');
+                    
+                    // [关键修复] 这里必须使用 cardIn，因为它对应 CSS 里的 @keyframes cardIn
+                    // 之前写的是 fadeUp，但 CSS 里没有 fadeUp，所以 opacity 保持 0，导致透明
+                    post.style.animation = 'none';
+                    post.offsetHeight; /* trigger reflow */
+                    post.style.animation = 'cardIn 0.6s ease-out forwards'; 
+                    
+                    visibleCount++;
+                } else {
+                    post.classList.add('hidden');
+                }
+            });
+
+            if (visibleCount === 0) {
+                noResultMsg.style.display = 'block';
+            } else {
+                noResultMsg.style.display = 'none';
+            }
+        }
+
+        // 绑定按钮点击事件
         filterBtns.forEach(btn => {
             btn.addEventListener('click', () => {
-                filterBtns.forEach(b => b.classList.remove('active')); btn.classList.add('active');
-                const filterValue = btn.getAttribute('data-filter'); let visibleCount = 0;
-                posts.forEach(post => {
-                    const postTags = post.getAttribute('data-tags').split(',');
-                    if (filterValue === 'all' || postTags.includes(filterValue)) { post.classList.remove('hidden'); post.style.animation = 'none'; post.offsetHeight; post.style.animation = 'fadeUp 0.5s forwards'; visibleCount++; }
-                    else { post.classList.add('hidden'); }
-                });
-                noResultMsg.style.display = visibleCount === 0 ? 'block' : 'none';
+                filterBtns.forEach(b => b.classList.remove('active')); 
+                btn.classList.add('active');
+                const val = btn.getAttribute('data-filter');
+                filterPosts(val);
             });
-        
+        });
 
-        // 3. URL 参数自动筛选 (?tag=xxx)
+        // URL 参数自动筛选
         const urlParams = new URLSearchParams(window.location.search);
-        const tagParam = urlParams.get('tag');
-        if (tagParam) {
-            const targetBtn = document.querySelector(`.filter-btn[data-filter="${tagParam}"]`);
+        const rawTagParam = urlParams.get('tag');
+        if (rawTagParam) {
+            const tagParam = decodeURIComponent(rawTagParam);
+            // 尝试找到按钮 (手动遍历以避免 CSS.escape 兼容性问题)
+            let targetBtn = null;
+            for(let b of filterBtns) {
+                if(b.getAttribute('data-filter') === tagParam) {
+                    targetBtn = b;
+                    break;
+                }
+            }
+            
             if (targetBtn) {
-                targetBtn.click();
-                const container = document.querySelector('.container');
-                if(container) container.scrollIntoView({ behavior: 'smooth' });
+                targetBtn.classList.add('active');
+                const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
+                if(allBtn) allBtn.classList.remove('active');
+            }
+            filterPosts(tagParam);
+            
+            // 滚动定位
+            const container = document.querySelector('.container');
+            if(container) {
+                setTimeout(() => { container.scrollIntoView({ behavior: 'smooth' }); }, 300);
             }
         }
     });
-        const urlParams = new URLSearchParams(window.location.search);
-        const tagParam = urlParams.get('tag');
-        if (tagParam) {
-            const targetBtn = document.querySelector(`.filter-btn[data-filter="${tagParam}"]`);
-            if (targetBtn) { targetBtn.click(); const container = document.querySelector('.container'); if(container) container.scrollIntoView({ behavior: 'smooth' }); }
-        }
-    });
 
-    // [新增] 移除 preload
+    // 移除 preload
     window.addEventListener('load', () => {
         setTimeout(() => {
             document.body.classList.remove('preload');
